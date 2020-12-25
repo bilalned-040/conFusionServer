@@ -8,8 +8,15 @@ var authenticate = require('../authenticate');
 router.use(bodyParser.json());
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/',authenticate.verifyUser ,authenticate.verifyAdmin,function(req, res, next) {
+  // res.send('respond with a resource');
+  User.find({}, function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 router.post('/signup', (req, res, next) => {
